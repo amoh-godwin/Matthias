@@ -15,7 +15,6 @@ ApplicationWindow {
 
     ColumnLayout{
         id:z_index0
-        anchors.centerIn: parent
         width: parent.width
         height: 640
         spacing: 0
@@ -67,13 +66,13 @@ ApplicationWindow {
         Rectangle {
             width: window.width
             anchors.horizontalCenter: parent.horizontalCenter
-            height: 540
+            height: window.height - 100
             color: "Transparent"
 
             StackView {
                 id: stack
                 width: parent.width
-                height: 540
+                height: parent.height
                 anchors.centerIn: parent
                 initialItem: first
                 focus: true
