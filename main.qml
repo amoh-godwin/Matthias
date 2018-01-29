@@ -561,7 +561,7 @@ ApplicationWindow {
                             id: secondRect
                             width: window.width
                             height: stack.height
-                            color: "Transparent"
+                            color: "#2a2a2a"
 
 
 
@@ -714,7 +714,7 @@ ApplicationWindow {
                                         anchors.horizontalCenter: parent.horizontalCenter
                                         Layout.fillWidth: true
                                         height: 80
-                                        color: "#4f4f4f"
+                                        color: "#2a2a2a"
 
                                         Rectangle {
                                             width: 120
