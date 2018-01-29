@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.5
+import QtQuick.Dialogs 1.0
 
 ApplicationWindow {
     id: window
@@ -11,6 +12,9 @@ ApplicationWindow {
     visible: true
     title: qsTr('LoveGod #3b3438')
     color: "#3a3a3a"
+
+    property string saveUrl: ""
+    property string urlName: ""
 
 
     ColumnLayout{
@@ -638,20 +642,30 @@ ApplicationWindow {
                                                 anchors.top: parent.top
 
                                                 CTextField {
+                                                    id: selectedFile
                                                     Layout.fillWidth: true
                                                     contentHeight: 24
                                                     foreground: "white"
+                                                    placeholder: urlName
                                                 }
 
-                                                Rectangle {
-                                                    width: 24
-                                                    height: 24
-                                                    color: "#4d4d4d"
+                                                CButton {
+                                                    cWidth: 24
+                                                    cHeight: 24
+                                                    background: "#4d4d4d"
+                                                    foreground: "black"
+                                                    label: "..."
 
-                                                    Text {
-                                                        anchors.centerIn: parent
-                                                        text: "..."
+                                                    MouseArea {
+                                                        anchors.fill: parent
+                                                        hoverEnabled: true
+                                                        onClicked: {
+                                                            fileDialog.selectExisting = true
+                                                            fileDialog.open()
+
+                                                        }
                                                     }
+
                                                 }
 
                                             }
@@ -678,24 +692,26 @@ ApplicationWindow {
                                                     Layout.fillWidth: true
 
                                                     CTextField {
+                                                        id: saveUField
                                                         Layout.fillWidth: true
                                                         contentHeight: 24
-                                                        placeholder: "Folder"
+                                                        placeholder: saveUrl
                                                         foreground: "white"
                                                     }
 
-                                                    Rectangle {
-                                                        width: 24
-                                                        height: 24
-                                                        color: "#4d4d4d"
-
-                                                        Text {
-                                                            anchors.centerIn: parent
-                                                            text: "..."
-                                                        }
+                                                    CButton {
+                                                        cWidth: 24
+                                                        cHeight: 24
+                                                        label: "..."
+                                                        foreground: "black"
+                                                        background: "#4d4d4d"
 
                                                         MouseArea {
                                                             anchors.fill: parent
+                                                            onClicked: {
+                                                                fileDialog.selectExisting = false
+                                                                fileDialog.open()
+                                                            }
                                                         }
 
                                                     }
@@ -720,7 +736,7 @@ ApplicationWindow {
                                             width: 120
                                             height: 40
                                             anchors.centerIn: parent
-                                            color: "#2f2f2f"
+                                            color: saveUField.placeholder == "" ? "#2f2f2f" : "#7d47ab"
                                             radius: 3
 
                                             MouseArea {
@@ -742,8 +758,8 @@ ApplicationWindow {
 
                                             Text {
                                                 anchors.centerIn: parent
-                                                text: "Cancel"
-                                                color: "#5a5a5a"
+                                                text: saveUField.placeholder == "" ? "Cancel" : "Save"
+                                                color: saveUField.placeholder == "" ? "#5a5a5a" : "#1a1a1a"
                                                 font.pixelSize: 24
                                             }
 
@@ -767,6 +783,23 @@ ApplicationWindow {
             }
         }
 
+    }
+
+    FileDialog {
+        id: fileDialog
+        title: "Please Choose a File"
+        folder: shortcuts.desktop
+
+        onAccepted: {
+
+            if(this.selectExisting == true) {
+                urlName = "" + this.fileUrls + ""
+            } else {
+                saveUrl = "" + this.fileUrls + ""
+            }
+
+
+        }
     }
 
     Connections {
