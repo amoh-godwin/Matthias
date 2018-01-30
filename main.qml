@@ -670,55 +670,38 @@ ApplicationWindow {
 
                                             }
 
-                                            ColumnLayout {
+                                            RowLayout {
                                                 Layout.fillWidth: true
-                                                Layout.fillHeight: true
                                                 anchors.bottom: parent.bottom
 
-                                                RowLayout {
+                                                CTextField {
+                                                    id: saveUField
                                                     Layout.fillWidth: true
-
-                                                    CTextField {
-                                                        Layout.fillWidth: true
-                                                        contentHeight: 24
-                                                        foreground: "white"
-                                                    }
-
-
-
+                                                    contentHeight: 24
+                                                    placeholder: saveUrl
+                                                    foreground: "white"
                                                 }
 
-                                                RowLayout {
-                                                    Layout.fillWidth: true
+                                                CButton {
+                                                    cWidth: 24
+                                                    cHeight: 24
+                                                    label: "..."
+                                                    foreground: "black"
+                                                    background: "#4d4d4d"
 
-                                                    CTextField {
-                                                        id: saveUField
-                                                        Layout.fillWidth: true
-                                                        contentHeight: 24
-                                                        placeholder: saveUrl
-                                                        foreground: "white"
-                                                    }
-
-                                                    CButton {
-                                                        cWidth: 24
-                                                        cHeight: 24
-                                                        label: "..."
-                                                        foreground: "black"
-                                                        background: "#4d4d4d"
-
-                                                        MouseArea {
-                                                            anchors.fill: parent
-                                                            onClicked: {
-                                                                fileDialog.selectExisting = false
-                                                                fileDialog.open()
-                                                            }
+                                                    MouseArea {
+                                                        anchors.fill: parent
+                                                        onClicked: {
+                                                            fileDialog.nameFilters = ["MPEG-3 Files(*.mp3)"]
+                                                            fileDialog.selectExisting = false
+                                                            fileDialog.open()
                                                         }
-
                                                     }
 
                                                 }
 
                                             }
+
 
                                         }
 
@@ -742,9 +725,16 @@ ApplicationWindow {
                                             MouseArea {
                                                 anchors.fill: parent
                                                 cursorShape: "PointingHandCursor"
+                                                //hoverEnabled: true
 
                                                 onClicked: {
-                                                    stack.pop()
+                                                    if(cASBtn.text == "Cancel") {
+                                                        stack.pop()
+                                                    } else {
+                                                        stack.push(third)
+                                                    }
+
+
                                                 }
 
                                                 onEntered: {
@@ -757,6 +747,7 @@ ApplicationWindow {
                                             }
 
                                             Text {
+                                                id: cASBtn
                                                 anchors.centerIn: parent
                                                 text: saveUField.placeholder == "" ? "Cancel" : "Save"
                                                 color: saveUField.placeholder == "" ? "#5a5a5a" : "#1a1a1a"
@@ -775,6 +766,58 @@ ApplicationWindow {
 
                         }
 
+
+                    }
+
+                }
+
+                Component {
+                    id: third
+
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        color: "#2a2a2a"
+
+                        Rectangle {
+                            width: 400
+                            height: parent.height - 160
+                            anchors.centerIn: parent
+                            color: "#2a2a2a"
+
+                            ColumnLayout {
+                                anchors.top: parent.top
+                                spacing: 12
+
+                                Text {
+                                    text: "Converting"
+                                    color: "#ffffff"
+                                }
+
+                                Rectangle {
+                                    width: 200
+                                    height: 4
+                                    color: "#4d4d4d"
+
+                                    Rectangle {
+                                        id: progressSelf
+                                        anchors.left: parent.left
+                                        width: 80
+                                        height: 4
+                                        color: "dodgerblue"
+                                    }
+
+                                }
+
+                                Text {
+                                    text: "filename.mp3"
+                                    color: "#ffffff"
+                                }
+
+
+                            }
+
+                        }
 
                     }
 
