@@ -1,4 +1,4 @@
-import QtQuick 2.3
+import QtQuick 2.6
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
 import QtQuick.Window 2.2
@@ -823,6 +823,143 @@ ApplicationWindow {
 
                 }
 
+                Component {
+                    id: last
+
+
+                    Rectangle {
+
+                        property int i;
+
+                        width: parent.width
+                        height: parent.height
+                        color: "#2a2a2a"
+
+                        ColumnLayout {
+                            width: parent.width
+                            //height: parent.height
+                            anchors.centerIn: parent
+                            spacing: 12
+
+                            Rectangle {
+                                width: 124
+                                height: 124
+                                color: "green"
+                                radius: 64
+                                border.width: 4
+                                border.color: "black"
+                                anchors.horizontalCenter: parent.horizontalCenter
+
+                                Image {
+                                    width: 124
+                                    height: 124
+                                    anchors.centerIn: parent
+                                    source: "icons/check-circle.svg"
+                                }
+
+                            }
+
+                            Rectangle {
+                                width: parent.width / 2
+                                height: 48
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                color: 'Transparent'
+
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: "Complete"
+                                    color: "#ffffff"
+                                    font.pixelSize: 24
+                                }
+                            }
+
+                            Rectangle {
+                                width: processedFile.width + 28
+                                height: 40
+                                color: "Transparent"
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                border.width: 2
+                                border.color: "#25000000"
+
+                                Text {
+                                    id: processedFile
+                                    anchors.centerIn: parent
+                                    text: "Filename.mp3"
+                                    color: '#ffffff'
+                                    font.pixelSize: 20
+                                }
+
+                            }
+
+                            CButton {
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                cWidth: 200
+                                cHeight: 48
+                                label: "Open in Explorer"
+                                background: "#45000000"
+                                borderRadius: 4
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                    hoverEnabled: true
+
+                                    onEntered: {
+                                        cursorShape = Qt.PointingHandCursor
+                                        parent.background = "#75000000"
+                                    }
+
+                                    onExited: {
+                                        cursorShape = Qt.PointingHandCursor
+                                        parent.background = "#45000000"
+                                    }
+
+                                    onClicked: {
+                                        // Call explorer on
+                                    }
+                                }
+                            }
+
+                            Rectangle {
+                                width: parent.width
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                height: 120
+                                color: "transparent"
+
+                                CButton {
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.bottom: parent.bottom
+                                    cWidth: 52
+                                    cHeight: 48
+                                    label: "Back"
+                                    background: "Transparent"
+                                    borderWidth: 1
+                                    borderColor: "#45000000"
+
+                                    MouseArea {
+                                        anchors.fill: parent
+
+                                        onClicked: {
+                                            console.log(stack.depth)
+                                            for(i=0; i<stack.depth; i++ ) {
+                                                stack.pop()
+                                            }
+                                        }
+
+
+                                    }
+                                }
+
+                            }
+
+                        }
+
+
+                    }
+
+
+
+                }
+
             }
         }
 
@@ -846,7 +983,7 @@ ApplicationWindow {
     }
 
     Connections {
-
+        target: convertor
     }
 
 }

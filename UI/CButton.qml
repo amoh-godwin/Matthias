@@ -12,6 +12,9 @@ FocusScope {
     property string label: "Click"
     property color foreground: "white"
     property color background: "#3a3a3a"
+    property int borderRadius: 0
+    property int borderWidth: 0
+    property color borderColor: "transparent"
 
     Rectangle {
 
@@ -19,6 +22,9 @@ FocusScope {
         width: cWidth
         height: cHeight
         color: background
+        radius: borderRadius
+        border.width: borderWidth
+        border.color: borderColor
 
 
         Text {
@@ -29,6 +35,7 @@ FocusScope {
         }
 
         MouseArea {
+            id: mouseA
             anchors.fill: parent
             hoverEnabled: true
         }
