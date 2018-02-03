@@ -16,6 +16,7 @@ ApplicationWindow {
     property string saveUrl: ""
     property string urlName: ""
     property int progressInt: 0
+    property string processedFile: ""
 
 
     ColumnLayout{
@@ -210,13 +211,13 @@ ApplicationWindow {
                                                             anchors.verticalCenter: parent.verticalCenter
 
                                                             Text {
-                                                                text: qsTr("Copy Audio")
+                                                                text: qsTr("Convert MPEG-3")
                                                                 color: "#ccc"
                                                                 font.pixelSize: 16
                                                             }
 
                                                             Text {
-                                                                text: qsTr("Make an audio file out of \na video")
+                                                                text: qsTr("Make an mp3 file out of \na video")
                                                                 color: "#ccc"
                                                                 font.pixelSize: 12
                                                             }
@@ -735,6 +736,8 @@ ApplicationWindow {
                                                         stack.pop()
                                                     } else {
                                                         stack.push(third)
+
+                                                        // Func
                                                         convert.start(urlName, saveUrl)
                                                     }
 
@@ -879,7 +882,7 @@ ApplicationWindow {
                             }
 
                             Rectangle {
-                                width: processedFile.width + 28
+                                width: children[0].width + 28
                                 height: 40
                                 color: "Transparent"
                                 anchors.horizontalCenter: parent.horizontalCenter
@@ -887,9 +890,8 @@ ApplicationWindow {
                                 border.color: "#25000000"
 
                                 Text {
-                                    id: processedFile
                                     anchors.centerIn: parent
-                                    text: "Filename.mp3"
+                                    text: processedFile
                                     color: '#ffffff'
                                     font.pixelSize: 20
                                 }
@@ -995,8 +997,8 @@ ApplicationWindow {
         }
 
         onCompleted: {
+            processedFile = completeStatus
             stack.push(last)
-            processedFile.text = completeStatus
         }
     }
 
