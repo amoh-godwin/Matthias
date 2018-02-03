@@ -15,6 +15,7 @@ ApplicationWindow {
 
     property string saveUrl: ""
     property string urlName: ""
+    property int progressInt: 0
 
 
     ColumnLayout{
@@ -47,6 +48,7 @@ ApplicationWindow {
                     }
 
                     Text {
+                        id: ltex
                         anchors.top: logo.bottom
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: "Convert"
@@ -660,6 +662,7 @@ ApplicationWindow {
                                                         anchors.fill: parent
                                                         hoverEnabled: true
                                                         onClicked: {
+                                                            fileDialog.nameFilters = ["All Files(*.*)"]
                                                             fileDialog.selectExisting = true
                                                             fileDialog.open()
 
@@ -732,6 +735,7 @@ ApplicationWindow {
                                                         stack.pop()
                                                     } else {
                                                         stack.push(third)
+                                                        convert.start(urlName, saveUrl)
                                                     }
 
 
@@ -790,6 +794,7 @@ ApplicationWindow {
                                 spacing: 12
 
                                 Text {
+                                    id: tiff
                                     text: "Converting"
                                     color: "#ffffff"
                                 }
@@ -802,7 +807,7 @@ ApplicationWindow {
                                     Rectangle {
                                         id: progressSelf
                                         anchors.left: parent.left
-                                        width: 80
+                                        width: progressInt
                                         height: 4
                                         color: "dodgerblue"
                                     }
@@ -983,7 +988,16 @@ ApplicationWindow {
     }
 
     Connections {
-        target: convertor
+        target: convert
+
+        onProgress: {
+            progressInt = start
+        }
+
+        onCompleted: {
+            stack.push(last)
+            processedFile.text = completeStatus
+        }
     }
 
 }
