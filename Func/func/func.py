@@ -31,7 +31,7 @@ def convertTo(filename, output, func):
     output_folder, output_file = makeFileFolder(output)
     with open('ffmpeg.exe', 'rb') as fr:
         ffbin = fr.read()
-        with open(input_folder + '/ffmpeg.exe', 'wb') as fw:
+        with open(input_folder + 'ffmpeg.exe', 'wb') as fw:
             fw.write(ffbin)
     os.chdir(input_folder)
     function = function_list[func]
@@ -50,10 +50,10 @@ def dataLen(filename):
 
 def explorer(filename):
     if os.path.exists(filename):
-        cmd = 'explorer ' + filename
+        cmd = 'explorer ' + filename.replace('/', '\\')
         os.popen(cmd)
     else:
-        return 'Sorry File does not Exist'   
+        return 'Sorry File does not Exist'
 
 def copyFiles(file, target):
     with open(file, 'rb') as fr:
@@ -61,3 +61,9 @@ def copyFiles(file, target):
         with open(target, 'wb') as fw:
             fw.write(data)
 
+def deleteFiles(input_folder, save_file):
+    os.chdir(input_folder)
+    fCmd = 'del ' + 'ffmpeg.exe'
+    os.popen(fCmd)
+    sCmd = 'del ' + save_file
+    os.popen(sCmd)
