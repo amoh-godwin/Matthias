@@ -729,16 +729,13 @@ ApplicationWindow {
                                             MouseArea {
                                                 anchors.fill: parent
                                                 cursorShape: "PointingHandCursor"
-                                                //hoverEnabled: true
+                                                hoverEnabled: true
 
                                                 onClicked: {
                                                     if(cASBtn.text == "Cancel") {
                                                         stack.pop()
                                                     } else {
                                                         stack.push(third)
-
-                                                        // Func
-                                                        convert.start(urlName, saveUrl)
                                                     }
 
 
@@ -782,6 +779,7 @@ ApplicationWindow {
                     id: third
 
                     Rectangle {
+
                         width: parent.width
                         height: parent.height
                         color: "#2a2a2a"
@@ -793,16 +791,21 @@ ApplicationWindow {
                             color: "#2a2a2a"
 
                             ColumnLayout {
-                                anchors.top: parent.top
-                                spacing: 12
+                                width: parent.width
+                                height: parent.height
 
-                                Text {
+                                ColumnLayout {
+
+                                    anchors.top: parent.top
+                                    spacing: 12
+
+                                    Text {
                                     id: tiff
                                     text: "Converting"
                                     color: "#ffffff"
                                 }
 
-                                Rectangle {
+                                    Rectangle {
                                     width: 200
                                     height: 4
                                     color: "#4d4d4d"
@@ -817,11 +820,30 @@ ApplicationWindow {
 
                                 }
 
-                                Text {
+                                    Text {
                                     text: "filename.mp3"
                                     color: "#ffffff"
                                 }
 
+                                }
+
+
+                                CButton {
+                                    anchors.horizontalCenter: parent.horizontalCenter
+                                    anchors.bottom: parent.bottom
+                                    cWidth: 200
+                                    cHeight: 40
+                                    label: "Start"
+
+                                    onHover: {
+                                        foreground = "#1b1b1b"
+                                        background = "#7a7a7a"
+                                    }
+
+                                    onClick: {
+                                        convert.start(urlName, saveUrl)
+                                    }
+                                }
 
                             }
 
@@ -921,7 +943,7 @@ ApplicationWindow {
                                     }
 
                                     onClicked: {
-                                        // Call explorer on
+                                        convert.openExplorer(processedFile)
                                     }
                                 }
                             }
@@ -993,7 +1015,7 @@ ApplicationWindow {
         target: convert
 
         onProgress: {
-            progressInt = start
+            progressInt = progressLoader
         }
 
         onCompleted: {
