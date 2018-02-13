@@ -5,11 +5,11 @@
 """
 
 import os
+import re
 
+import math
 
 function_list = {'mp3':'-i', 'copy': ''}
-
-estimates = {'mp3': 18, 'mp4': 512}
 
 def makeFileFolder(fileName):
     filename = fileName.replace('\\', '/')
@@ -22,9 +22,31 @@ def makeFileFolder(fileName):
             folder += love[x] + '/'
     return folder, file
     
-def estimate(name, dur):
-    est = estimates[name] * 300
-    return est
+def estimate():
+    lists = os.listdir()
+    for item in lists:
+        if 'ffmpeg-' in item:
+            log_file = item
+            no = 0
+            line_no = 8816
+            with open(item, 'r') as logFile:
+                for line in logFile:
+                    no += 1
+                    if re.findall('  Duration: .*?.*?.*? kb/s$', line):
+                        line_no = no
+                        dLine = re.findall('[0-9]+:[0-9]+:[0-9]+.?[0-9]+', line)
+                        timeCards = dLine[0].split(':')
+                        mmtimers = int(timeCards[1]) * 60
+                        soad = math.ceil(float(timeCards[2]))
+                        dracell = mmtimers + soad
+                    elif no == line_no + 5:
+                        kbLine = re.findall('[0-9]+ kb/s', line)
+                        nums = re.split(' ', kbLine[0])
+                        kbints = int(nums[0])
+                        kbytes = (kbints / 8) * 1024
+                total = dracell * kbytes
+                print(total)
+            return total, log_file
 
 def convertTo(filename, output, func):
     input_folder, input_file = makeFileFolder(filename)
@@ -35,7 +57,8 @@ def convertTo(filename, output, func):
             fw.write(ffbin)
     os.chdir(input_folder)
     function = function_list[func]
-    cmd = 'ffmpeg' + ' ' + function + ' ' + input_file + ' ' + output_file
+    cmd = 'ffmpeg' + ' ' + function + ' ' + input_file + ' ' + output_file + \
+        ' -report'
     os.popen(cmd)
     
     #copyFiles(output_file, output_folder + output_file)
@@ -47,6 +70,12 @@ def dataLen(filename):
     with open(filename, 'rb') as handle:
         data = handle.read()
         return len(data)
+
+def verifyFinish(log_file):
+    with open(log_file, 'r') as lg:
+        for line in lg:
+            if re.findall('[0-9]+ frames successfully decoded', line):
+                return True
 
 def explorer(filename):
     if os.path.exists(filename):
@@ -61,9 +90,13 @@ def copyFiles(file, target):
         with open(target, 'wb') as fw:
             fw.write(data)
 
-def deleteFiles(input_folder, save_file):
+def deleteFiles(input_folder, save_file, log_file):
     os.chdir(input_folder)
     fCmd = 'del ' + 'ffmpeg.exe'
     os.popen(fCmd)
     sCmd = 'del ' + save_file
+    print(sCmd)
     os.popen(sCmd)
+    tCmd = 'del ' + log_file
+    print(tCmd)
+    os.popen(tCmd)
